@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show, :index] 
 
   def new
     @post = Post.new
@@ -15,6 +15,14 @@ class PostsController < ApplicationController
       flash[:alert] = '投稿に失敗しました'
       render :new
     end
+  end
+
+  def show # 追加
+    @post = Post.find_by(id: params[:id])
+  end
+
+  def index # 追加
+    @posts = Post.limit(10).order(created_at: :desc)
   end
 
   private
